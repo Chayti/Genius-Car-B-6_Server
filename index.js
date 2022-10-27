@@ -8,16 +8,30 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vwx9p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = "mongodb+srv://cardoctor:abcd1234@cluster0.gme9trc.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
     try {
-        await client.connect();
+        const servicesCollection = client.db('carDoctor').collection('services');
+        
+
+        app.get('/services', async (req, res) => {
+            const query = {};
+            const cursor = servicesCollection.find(query);
+            const data = await cursor.toArray();
+            res.send(data);
+        });
+        app.get('/service/:id', async (req, res) => {
+            const query = {_id:ObjectId(req.params.id)};
+            const cursor = await servicesCollection.findOne(query);
+            console.log(cursor)
+            res.send(cursor);
+        });
 
     }
     finally {
-        console.log(client)
+        // console.log(client)
     }
 }
 
