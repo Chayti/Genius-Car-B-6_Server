@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// DB_USER=cardoctor
+// DB_PASS=abcd1234
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gme9trc.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
