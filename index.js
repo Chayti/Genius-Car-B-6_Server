@@ -30,13 +30,21 @@ async function run() {
       res.send(result);
     });
 
-    // sort by price
+    // sort by price ascending
     app.get('/sortedServices', async (req, res) => {
       let result = await servicesCollection.find({}).sort({ price: 1 }).toArray();
-
-      // let result = await servicesCollection.find({ price: { $gt: '20.00' } }).toArray();
       res.send(result);
     });
+
+    // find by range
+    app.get('/findByRange', async (req, res) => {
+      const ll = parseInt(req.query.ll);
+      const ul = parseInt(req.query.ul);
+      // console.log(ll, ul);
+      let result = await servicesCollection.find({ price: { $gte: ll, $lte: ul } }).sort({ price: 1 }).toArray()
+      res.send(result)
+    });
+
 
     app.get("/services", async (req, res) => {
       const query = {};
