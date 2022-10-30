@@ -30,6 +30,14 @@ async function run() {
       res.send(result);
     });
 
+    // sort by price
+    app.get('/sortedServices', async (req, res) => {
+      let result = await servicesCollection.find({}).sort({ price: 1 }).toArray();
+
+      // let result = await servicesCollection.find({ price: { $gt: '20.00' } }).toArray();
+      res.send(result);
+    });
+
     app.get("/services", async (req, res) => {
       const query = {};
       const cursor = servicesCollection.find(query);
